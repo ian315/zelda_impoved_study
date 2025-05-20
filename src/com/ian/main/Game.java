@@ -3,6 +3,7 @@ package com.ian.main;
 import com.ian.entities.Entity;
 import com.ian.entities.Player;
 import com.ian.graphics.Spritesheet;
+import com.ian.world.World;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,6 +26,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     private final int HEIGHT = 160;
     private final int SCALE = 3;
 
+    public static World world;
     public List<Entity> entityList;
     public static Spritesheet spritesheet;
     Player player;
@@ -37,7 +39,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
         bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         entityList = new ArrayList<>();
         spritesheet = new Spritesheet("/Spritesheet.png");
-        player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
+        world = new World("/WorldSpritesheet.png"); // World precisa ser depois do spritesheet, pois precisamos inicializar antes, se n vai dar nullpointer
+        player = new Player(16, 18, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
         entityList.add(player);
     }
 
@@ -75,9 +78,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
         }
 
         Graphics graphics = bufferedImage.getGraphics();
-        graphics.setColor(new Color(0, 255, 0));
+        graphics.setColor(Color.DARK_GRAY);
         graphics.fillRect(0, 0, WIDTH, HEIGHT);
 
+        //Renderiazacao do mundo
+        world.render(graphics);
         for (Entity entity : entityList) {
             entity.render(graphics);
         }
@@ -110,7 +115,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
             }
 
             if (System.currentTimeMillis() - timer >= 1000){
-                System.out.println("frames: " + frames);
+//                System.out.println("frames: " + frames);
                 frames = 0;
                 timer += 1000;
             }

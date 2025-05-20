@@ -19,7 +19,7 @@ public class Player extends Entity{
 
     public Player(double x, double y, int width, int height, BufferedImage sprite) {
         super(x, y, width, height, sprite);
-        playerMovements.put("right", getPLayerRightMovement());
+        playerMovements.put("right", getPlayerRightMovement());
         playerMovements.put("left", getPlayerLeftMovement());
     }
 
@@ -57,7 +57,7 @@ public class Player extends Entity{
         }
     }
 
-    public BufferedImage[] getPLayerRightMovement() {
+    public BufferedImage[] getPlayerRightMovement() {
         BufferedImage[] rightMovement = new BufferedImage[3];
 
         for (int i = 0; i < rightMovement.length; i++){
