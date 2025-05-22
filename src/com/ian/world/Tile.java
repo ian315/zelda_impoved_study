@@ -10,8 +10,8 @@ public class Tile {
     public static BufferedImage TILE_FLOOR = Game.spritesheet.getSprite(0, 0, 16, 16);
     public static BufferedImage TILE_WALL = Game.spritesheet.getSprite(16, 0, 16, 16);
 
-    private BufferedImage sprite;
-    private int x, y;
+    private final BufferedImage sprite;
+    private final int x, y;
 
     public Tile(int x, int y, BufferedImage sprite) {
         this.x = x;
@@ -20,6 +20,6 @@ public class Tile {
     }
 
     public void render(Graphics graphics) {
-        graphics.drawImage(sprite, x , y, null);
+        graphics.drawImage(sprite, x - Camera.getX() , y - Camera.getY(), null);
     }
 }

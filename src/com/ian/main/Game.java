@@ -22,14 +22,14 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static JFrame frame;
     public BufferedImage bufferedImage;
 
-    private final int WIDTH = 240;
-    private final int HEIGHT = 160;
+    private static final int WIDTH = 240;
+    private static final int HEIGHT = 160;
     private final int SCALE = 3;
 
     public static World world;
-    public List<Entity> entityList;
+    public static List<Entity> entityList = new ArrayList<>();
     public static Spritesheet spritesheet;
-    Player player;
+    public static Player player;
 
     public Game() {
         addKeyListener(this);
@@ -37,11 +37,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
         initializeFrame();
         //Aqui inicializa os objetos
         bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-        entityList = new ArrayList<>();
         spritesheet = new Spritesheet("/Spritesheet.png");
-        world = new World("/WorldSpritesheet.png"); // World precisa ser depois do spritesheet, pois precisamos inicializar antes, se n vai dar nullpointer
-        player = new Player(16, 18, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
+        player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
         entityList.add(player);
+        world = new World("/WorldSpritesheet.png"); // World precisa ser depois do spritesheet, pois precisamos inicializar antes, se n vai dar nullpointer
     }
 
     public static void main(String[] args) {
@@ -167,5 +166,13 @@ public class Game extends Canvas implements Runnable, KeyListener {
         else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
             player.setDown(false);
         }
+    }
+
+    public static int getWIDTH() {
+        return WIDTH;
+    }
+
+    public static int getHEIGHT() {
+        return HEIGHT;
     }
 }

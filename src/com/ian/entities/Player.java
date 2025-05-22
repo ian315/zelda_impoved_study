@@ -1,6 +1,8 @@
 package com.ian.entities;
 
 import com.ian.main.Game;
+import com.ian.world.Camera;
+import com.ian.world.World;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -15,7 +17,7 @@ public class Player extends Entity{
     public int maxFrames = 5;
     public int currentAnimation = 0;
     public boolean moved = false;
-    private Map<String, BufferedImage[]> playerMovements = new HashMap<>();
+    private final Map<String, BufferedImage[]> playerMovements = new HashMap<>();
 
     public Player(double x, double y, int width, int height, BufferedImage sprite) {
         super(x, y, width, height, sprite);
@@ -25,21 +27,23 @@ public class Player extends Entity{
 
     public void update() {
         moved = false;
-        if(right){
+        if(right && World.isTileFree((int)(this.getX() + SPEED), this.getY())){
             moved = true;
             this.setX(x += SPEED);
         }
-        if(left) {
+        if(left && World.isTileFree((int)(this.getX() - SPEED), this.getY())) {
             moved = true;
             this.setX(x -= SPEED);
         }
-        if(down) {
+        if(down && World.isTileFree(this.getX(), (int) (this.getY() + SPEED))) {
             moved = true;
             this.setY(y += SPEED);
+            System.out.println(World.isTileFree(this.getX(), (int) (this.getY() - SPEED)));
         }
-        if(up) {
+        if(up && World.isTileFree(this.getX(), (int) (this.getY() - SPEED))) {
             moved = true;
             this.setY(y -= SPEED);
+            System.out.println(World.isTileFree(this.getX(), (int) (this.getY() + SPEED)));
         }
 
         if (moved && !up && !down) {
@@ -55,6 +59,11 @@ public class Player extends Entity{
                 }
             }
         }
+//        Camera.setX(this.getX() - (Game.getWIDTH()/2));
+//        Camera.setY(this.getY() - (Game.getHEIGHT()/2));
+
+        Camera.setX(Camera.clamp(this.getX() - (Game.getWIDTH()/2), 0, World.getWIDTH() * 16 - Game.getWIDTH()));
+        Camera.setY(Camera.clamp(this.getY() - (Game.getHEIGHT()/2), 0, World.getHEIGHT() * 16 - Game.getHEIGHT()));
     }
 
     public BufferedImage[] getPlayerRightMovement() {
@@ -78,21 +87,21 @@ public class Player extends Entity{
     public void render(Graphics graphics) {
         if (!moved) {
             graphics.drawImage(Game.spritesheet.getSprite(32, 0, 16, 16),
-                    this.getX(), this.getY(), null);
+                    this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
         }
-        if (down) { //mais correto seria ter uma animacao para idle e uma animacao para quando estiver andando para baixo
+        if (down) { //deveria ter uma animacao para idle e uma animacao para quando estiver andando para baixo
             graphics.drawImage(Game.spritesheet.getSprite(32, 0, 16, 16),
-                    this.getX(), this.getY(), null);
+                    this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
         }
         if (right){
-            graphics.drawImage(playerMovements.get("right")[currentAnimation], this.getX(), this.getY(), null);
+            graphics.drawImage(playerMovements.get("right")[currentAnimation], this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
         }
         if (left){
-            graphics.drawImage(playerMovements.get("left")[currentAnimation], this.getX(), this.getY(), null);
+            graphics.drawImage(playerMovements.get("left")[currentAnimation], this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
         }
         if (up) {
             graphics.drawImage(Game.spritesheet.getSprite(48, 0, 16, 16),
-                    this.getX(), this.getY(), null);
+                    this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
         }
     }
 
