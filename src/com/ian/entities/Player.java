@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class Player extends Entity{
     public boolean right, left, up, down;
-    private final double SPEED = 1.0;
+    private final double SPEED = 1.5;
 
     public int frames = 0;
     public int maxFrames = 5;
@@ -27,23 +27,21 @@ public class Player extends Entity{
 
     public void update() {
         moved = false;
-        if(right && World.isTileFree((int)(this.getX() + SPEED), this.getY())){
+        if(right && rightTileIsFree(SPEED)){
             moved = true;
             this.setX(x += SPEED);
         }
-        if(left && World.isTileFree((int)(this.getX() - SPEED), this.getY())) {
+        if(left && leftTileIsFree(SPEED)) {
             moved = true;
             this.setX(x -= SPEED);
         }
-        if(down && World.isTileFree(this.getX(), (int) (this.getY() + SPEED))) {
+        if(down && downTileIsFree(SPEED)) {
             moved = true;
             this.setY(y += SPEED);
-            System.out.println(World.isTileFree(this.getX(), (int) (this.getY() - SPEED)));
         }
-        if(up && World.isTileFree(this.getX(), (int) (this.getY() - SPEED))) {
+        if(up && upTileIsFree(SPEED)) {
             moved = true;
             this.setY(y -= SPEED);
-            System.out.println(World.isTileFree(this.getX(), (int) (this.getY() + SPEED)));
         }
 
         if (moved && !up && !down) {
@@ -65,6 +63,7 @@ public class Player extends Entity{
         Camera.setX(Camera.clamp(this.getX() - (Game.getWIDTH()/2), 0, World.getWIDTH() * 16 - Game.getWIDTH()));
         Camera.setY(Camera.clamp(this.getY() - (Game.getHEIGHT()/2), 0, World.getHEIGHT() * 16 - Game.getHEIGHT()));
     }
+
 
     public BufferedImage[] getPlayerRightMovement() {
         BufferedImage[] rightMovement = new BufferedImage[3];
