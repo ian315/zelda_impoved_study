@@ -43,6 +43,14 @@ public class Entity {
 
     }
 
+    protected boolean rightTileIsFree(double SPEED) {
+        return World.isTileFree((int) (this.getX() + SPEED), this.getY());
+    }
+
+    protected boolean leftTileIsFree(double SPEED) {
+        return World.isTileFree((int) (this.getX() - SPEED), this.getY());
+    }
+
     protected boolean upTileIsFree(double SPEED) {
         return World.isTileFree(this.getX(), (int) (this.getY() - SPEED));
     }
@@ -51,13 +59,6 @@ public class Entity {
         return World.isTileFree(this.getX(), (int) (this.getY() + SPEED));
     }
 
-    protected boolean leftTileIsFree(double SPEED) {
-        return World.isTileFree((int) (this.getX() - SPEED), this.getY());
-    }
-
-    protected boolean rightTileIsFree(double SPEED) {
-        return World.isTileFree((int) (this.getX() + SPEED), this.getY());
-    }
 
     public int getX() {
         return (int) this.x;

@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 public class World {
@@ -32,23 +33,19 @@ public class World {
 
                     if (actualPixel == 0xFF000000) {//BLACK/FLOOR
                         tiles[posX + (posY * WIDTH)] = new TileFloor(posX * 16, posY * 16, Tile.TILE_FLOOR);
-
                     } else if (actualPixel == 0xFFFFFFFF) { //WHITE/WALL
                         tiles[posX + (posY * WIDTH)] = new TileWall(posX * 16, posY * 16, Tile.TILE_WALL);
-
-                    } else if (actualPixel == 0xFF0026FF) {//BLUE/PLAYER
+                    } else if (actualPixel == 0xFF0026FF) {//BLUE/PLAYER//POSITION
                         Game.player.setX(posX * 16);
                         Game.player.setY(posY * 16);
-
                     } else if (actualPixel == 0xFFFF0000) {//RED/ENEMY
-                        Game.entityList.add(new Enemy(posX * 16, posY * 16, 16, 16, Entity.entities.get("slime")));
-
+                        Enemy enemies = new Enemy(posX * 16, posY * 16, 16, 16, Entity.entities.get("slime"));
+                        Game.entityList.add(enemies);
+                        Game.enemyList.add(enemies);
                     } else if (actualPixel == 0xFFFFD800) {//YELLOW/AMMO
                         Game.entityList.add(new Ammo(posX * 16, posY * 16, 16, 16, Entity.entities.get("ammo")));
-
                     } else if (actualPixel == 0xFF4CFF00) {//GREEN/HEATLH
                         Game.entityList.add(new HealthPotions(posX * 16, posY * 16, 16, 16, Entity.entities.get("health")));
-
                     } else if (actualPixel == 0xFFFF00DC) {//PINK/BOW
                         Game.entityList.add(new Weapon(posX * 16, posY * 16, 16, 16, Entity.entities.get("bow")));
                     }

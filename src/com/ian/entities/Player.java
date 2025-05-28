@@ -11,7 +11,9 @@ import java.util.Map;
 
 public class Player extends Entity{
     public boolean right, left, up, down;
-    private final double SPEED = 1.5;
+    private final double SPEED = 2;
+
+    protected int life = 100;
 
     public int frames = 0;
     public int maxFrames = 5;

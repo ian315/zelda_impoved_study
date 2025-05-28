@@ -1,5 +1,6 @@
 package com.ian.main;
 
+import com.ian.entities.Enemy;
 import com.ian.entities.Entity;
 import com.ian.entities.Player;
 import com.ian.graphics.Spritesheet;
@@ -31,6 +32,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static List<Entity> entityList = new ArrayList<>();
     public static Spritesheet spritesheet;
     public static Player player;
+    public static List<Enemy> enemyList = new ArrayList<>();
 
     public static Random random;
 
