@@ -30,7 +30,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     private final int SCALE = 3;
 
     public static World world;
-    public static List<Entity> entityList = new ArrayList<>();
+    public static List<Entity> entityList = new ArrayList<>(); //poderia ter feito uma map, talvez mais pesado, porem mais facil de acessar e pegar as entidades
     public static Spritesheet spritesheet;
     public static Player player;
     public static List<Enemy> enemyList = new ArrayList<>();
@@ -73,8 +73,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
     }
 
     public void update() {
-        for (Entity entity : entityList) {
-            entity.update();
+        for (int i =0; i < entityList.size(); i++){
+            Entity actualEntity = entityList.get(i);
+            actualEntity.update();
         }
     }
 

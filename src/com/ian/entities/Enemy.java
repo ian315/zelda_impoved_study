@@ -18,7 +18,7 @@ public class Enemy extends Entity {
         // caso eu nao use um cast no na direcao, se eu nao usar else if ele quebra, no entanto se usa apenas IF ele funciona normal
         // como quero q o mob se movimente na diagonal tambem, nao irei usar else if
 
-        if (!hasPlayerColided()) {
+        if (!hasPlayerCollided()) {
             if (Game.random.nextInt(100) < 45) {
                 if ((int) x < Game.player.getX() && rightTileIsFree(SPEED) && isNotColiding((int) (this.getX() + SPEED), this.getY())) {
                     x += SPEED;
@@ -43,7 +43,7 @@ public class Enemy extends Entity {
         }
     }
 
-    public boolean hasPlayerColided() {
+    public boolean hasPlayerCollided() {
         Rectangle enemy = new Rectangle(this.getX(), this.getY(), World.TILE_SIZE, World.TILE_SIZE);
         Rectangle player = new Rectangle(Game.player.getX(), Game.player.getY(), World.TILE_SIZE, World.TILE_SIZE);
 
@@ -62,7 +62,6 @@ public class Enemy extends Entity {
             if (enemyCurrent.intersects(nextEnemy)) {
                 return false;
             }
-
         }
         return true;
     }

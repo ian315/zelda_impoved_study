@@ -15,6 +15,8 @@ public class Entity {
     protected int width;
     protected int height;
 
+    protected int hitBoxX, hitBoxY, hitBoxWidth, hitBoxHeight;
+
     public static final Map<String, BufferedImage> entities = new HashMap<>();
 
     BufferedImage sprite;
@@ -26,17 +28,38 @@ public class Entity {
         this.height = height;
         this.sprite = sprite;
         this.getEntitiesSprites();
+
+        this.hitBoxHeight = height;
+        this.hitBoxWidth = width;
+        this.hitBoxY = 0;
+        this.hitBoxX = 0;
+    }
+
+    public void setHitBox(int hitBoxHeight, int hitBoxWidth, int hitBoxY, int hitBoxX) {
+        this.hitBoxHeight = hitBoxHeight;
+        this.hitBoxWidth = hitBoxWidth;
+        this.hitBoxY = hitBoxY;
+        this.hitBoxX = hitBoxX;
     }
 
     public void getEntitiesSprites(){
-        entities.put("health", Game.spritesheet.getSprite(0,16, 16, 16));
+        entities.put("lifePack", Game.spritesheet.getSprite(0,16, 16, 16));
         entities.put("bow", Game.spritesheet.getSprite(16,16, 16, 16));
         entities.put("ammo", Game.spritesheet.getSprite(32,16, 16, 16));
         entities.put("slime", Game.spritesheet.getSprite(48,16, 16, 16));
     }
 
+    public static boolean hasEntityCollide(Entity entity1, Entity entity2) {
+        Rectangle entityHitBox1 = new Rectangle(entity1.getX() + entity1.hitBoxX, entity1.getY() + entity1.hitBoxY, entity1.hitBoxWidth, entity1.hitBoxHeight);
+        Rectangle entityHitBox2 = new Rectangle(entity2.getX() + entity2.hitBoxX, entity2.getY() + entity2.hitBoxY, entity2.hitBoxWidth, entity2.hitBoxHeight);
+
+        return entityHitBox1.intersects(entityHitBox2);
+    }
+
     public void render(Graphics graphics) {
         graphics.drawImage(sprite, this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+        graphics.setColor(Color.BLUE);
+        graphics.fillRect(this.getX() - Camera.getX(), this.getY() - Camera.getY(), hitBoxWidth, hitBoxHeight);
     }
 
     public void update() {

@@ -7,7 +7,6 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 public class World {
@@ -45,7 +44,7 @@ public class World {
                     } else if (actualPixel == 0xFFFFD800) {//YELLOW/AMMO
                         Game.entityList.add(new Ammo(posX * 16, posY * 16, 16, 16, Entity.entities.get("ammo")));
                     } else if (actualPixel == 0xFF4CFF00) {//GREEN/HEATLH
-                        Game.entityList.add(new HealthPotions(posX * 16, posY * 16, 16, 16, Entity.entities.get("health")));
+                        Game.entityList.add(new LifePack(posX * 16, posY * 16, 16, 16, Entity.entities.get("lifePack")));
                     } else if (actualPixel == 0xFFFF00DC) {//PINK/BOW
                         Game.entityList.add(new Weapon(posX * 16, posY * 16, 16, 16, Entity.entities.get("bow")));
                     }

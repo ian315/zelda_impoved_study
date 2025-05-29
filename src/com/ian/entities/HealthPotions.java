@@ -1,9 +1,0 @@
-package com.ian.entities;
-
-import java.awt.image.BufferedImage;
-
-public class HealthPotions extends Entity{
-    public HealthPotions(double x, double y, int width, int height, BufferedImage sprite) {
-        super(x, y, width, height, sprite);
-    }
-}

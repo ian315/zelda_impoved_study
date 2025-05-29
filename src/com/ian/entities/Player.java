@@ -6,7 +6,9 @@ import com.ian.world.World;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Player extends Entity{
@@ -60,13 +62,12 @@ public class Player extends Entity{
                 }
             }
         }
-//        Camera.setX(this.getX() - (Game.getWIDTH()/2));
-//        Camera.setY(this.getY() - (Game.getHEIGHT()/2));
+
+        LifePack.checkLifePackCollision(Game.entityList);
 
         Camera.setX(Camera.clamp(this.getX() - (Game.getWIDTH()/2), 0, World.getWIDTH() * 16 - Game.getWIDTH()));
         Camera.setY(Camera.clamp(this.getY() - (Game.getHEIGHT()/2), 0, World.getHEIGHT() * 16 - Game.getHEIGHT()));
     }
-
 
     public BufferedImage[] getPlayerRightMovement() {
         BufferedImage[] rightMovement = new BufferedImage[3];
