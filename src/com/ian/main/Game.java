@@ -4,6 +4,7 @@ import com.ian.entities.Enemy;
 import com.ian.entities.Entity;
 import com.ian.entities.Player;
 import com.ian.graphics.Spritesheet;
+import com.ian.graphics.Ui;
 import com.ian.world.World;
 
 import javax.swing.*;
@@ -33,6 +34,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static Spritesheet spritesheet;
     public static Player player;
     public static List<Enemy> enemyList = new ArrayList<>();
+    public Ui ui;
 
     public static Random random;
 
@@ -43,10 +45,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
         random = new Random();
         //Aqui inicializa os objetos
         bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+        ui = new Ui();
         spritesheet = new Spritesheet("/Spritesheet.png");
         player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
         entityList.add(player);
-        world = new World("/WorldSpritesheet.png"); // World precisa ser depois do spritesheet, pois precisamos inicializar antes, se n vai dar nullpointer
+        world = new World("/WorldSpritesheet.png"); // World precisa ser depois do spritesheet, pois precisamos inicializar antes, se nao vai dar nullpointer
     }
 
     public static void main(String[] args) {
@@ -91,6 +94,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         for (Entity entity : entityList) {
             entity.render(graphics);
         }
+        ui.render(graphics);
 
         graphics.dispose();
         graphics = bufferStrategy.getDrawGraphics();

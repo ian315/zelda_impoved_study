@@ -34,8 +34,11 @@ public class Enemy extends Entity {
             }
         } else {
             if (Game.random.nextInt(100) < 10) {
-                Game.player.life--;
-                System.out.println(Game.player.life);
+                Player.life--;
+                System.out.println(Player.life);
+
+                if (Player.life == 0)
+                    System.exit(1);
             }
         }
     }

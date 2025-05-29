@@ -13,7 +13,8 @@ public class Player extends Entity{
     public boolean right, left, up, down;
     private final double SPEED = 2;
 
-    protected int life = 100;
+    protected static double life = 100;
+    protected static double maxLife = 100;
 
     public int frames = 0;
     public int maxFrames = 5;
@@ -136,5 +137,13 @@ public class Player extends Entity{
 
     public void setDown(boolean down) {
         this.down = down;
+    }
+
+    public static double getLife() {
+        return life;
+    }
+
+    public static double getMaxLife() {
+        return maxLife;
     }
 }
