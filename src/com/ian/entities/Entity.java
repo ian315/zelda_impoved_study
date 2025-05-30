@@ -58,8 +58,6 @@ public class Entity {
 
     public void render(Graphics graphics) {
         graphics.drawImage(sprite, this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
-        graphics.setColor(Color.BLUE);
-        graphics.fillRect(this.getX() - Camera.getX(), this.getY() - Camera.getY(), hitBoxWidth, hitBoxHeight);
     }
 
     public void update() {

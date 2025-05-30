@@ -3,8 +3,6 @@ package com.ian.entities;
 import com.ian.main.Game;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class LifePack extends Entity{
@@ -17,9 +15,9 @@ public class LifePack extends Entity{
             Entity actualEntity = entities.get(i);
             if (actualEntity instanceof LifePack){
                 if (hasEntityCollide(Game.player, actualEntity)){
-                    Player.life += 10;
-                    if (Player.life >= 100)
-                        Player.life = 100;
+                    Game.player.life += 10;
+                    if (Game.player.life >= 100)
+                        Game.player.life = 100;
                     entities.remove(actualEntity);
                 }
             }

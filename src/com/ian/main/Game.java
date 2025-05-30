@@ -30,10 +30,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
     private final int SCALE = 3;
 
     public static World world;
-    public static List<Entity> entityList = new ArrayList<>(); //poderia ter feito uma map, talvez mais pesado, porem mais facil de acessar e pegar as entidades
+    public static List<Entity> entityList; //poderia ter feito uma map, talvez mais pesado, porem mais facil de acessar e pegar as entidades
     public static Spritesheet spritesheet;
     public static Player player;
-    public static List<Enemy> enemyList = new ArrayList<>();
+    public static List<Enemy> enemyList;
     public Ui ui;
 
     public static Random random;
@@ -46,6 +46,8 @@ public class Game extends Canvas implements Runnable, KeyListener {
         //Aqui inicializa os objetos
         bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         ui = new Ui();
+        entityList = new ArrayList<>();
+        enemyList = new ArrayList<>();
         spritesheet = new Spritesheet("/Spritesheet.png");
         player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
         entityList.add(player);
@@ -64,7 +66,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     }
 
     public synchronized void stop() {
-        isRunning= false;
+        isRunning = false;
         try {
             thread.join();
         } catch (InterruptedException e) {
@@ -73,7 +75,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
     }
 
     public void update() {
-        for (int i =0; i < entityList.size(); i++){
+        for (int i = 0; i < entityList.size(); i++) {
             Entity actualEntity = entityList.get(i);
             actualEntity.update();
         }
@@ -125,7 +127,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
                 updateDelta--;
             }
 
-            if (System.currentTimeMillis() - timer >= 1000){
+            if (System.currentTimeMillis() - timer >= 1000) {
 //                System.out.println("frames: " + frames);
                 frames = 0;
                 timer += 1000;
@@ -152,14 +154,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
             player.setRight(true);
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_LEFT|| e.getKeyCode() == KeyEvent.VK_A) {
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
             player.setLeft(true);
         }
         if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
             player.setUp(true);
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
             player.setDown(true);
         }
     }
@@ -168,14 +168,12 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
             player.setRight(false);
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_LEFT|| e.getKeyCode() == KeyEvent.VK_A) {
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
             player.setLeft(false);
         }
         if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
             player.setUp(false);
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
             player.setDown(false);
         }
     }

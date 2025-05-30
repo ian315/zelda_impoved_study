@@ -26,7 +26,7 @@ public class Enemy extends Entity {
                     x -= SPEED;
                 }
 
-                if ((int) y < Game.player.getY() && downTileIsFree(SPEED) && isNotColiding(this.getX(), (int) (this.getY() + SPEED))) {
+                else if ((int) y < Game.player.getY() && downTileIsFree(SPEED) && isNotColiding(this.getX(), (int) (this.getY() + SPEED))) {
                     y += SPEED;
                 } else if ((int) y > Game.player.getY() && upTileIsFree(SPEED) && isNotColiding(this.getX(), (int) (this.getY() - SPEED))) {
                     y -= SPEED;
@@ -34,11 +34,8 @@ public class Enemy extends Entity {
             }
         } else {
             if (Game.random.nextInt(100) < 10) {
-                Player.life--;
-                System.out.println(Player.life);
-
-                if (Player.life == 0)
-                    System.exit(1);
+                Game.player.life -= Game.random.nextInt(3);
+                Player.setDamaged(true);
             }
         }
     }
