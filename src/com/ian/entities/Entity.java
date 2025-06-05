@@ -47,6 +47,8 @@ public class Entity {
         entities.put("bow", Game.spritesheet.getSprite(16,16, 16, 16));
         entities.put("ammo", Game.spritesheet.getSprite(32,16, 16, 16));
         entities.put("slime", Game.spritesheet.getSprite(48,16, 16, 16));
+        entities.put("bowRight", Game.spritesheet.getSprite(16,32, 16, 16));
+        entities.put("bowLeft", Game.spritesheet.getSprite(32,32, 16, 16));
     }
 
     public static boolean hasEntityCollide(Entity entity1, Entity entity2) {

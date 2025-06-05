@@ -13,6 +13,10 @@ import java.util.Map;
 
 public class Player extends Entity {
     public boolean right, left, up, down;
+    private int direction;
+    private int directionRight = 0;
+    private int directionLeft = 1;
+    private boolean moved;
     private final double SPEED = 1;
 
     protected double life = 100;
@@ -22,12 +26,13 @@ public class Player extends Entity {
     public int frames = 0;
     public int maxFrames = 5;
     public int currentAnimation = 0;
-    public boolean moved = false;
     private final Map<String, BufferedImage[]> playerMovements = new HashMap<>();
     private final BufferedImage playerDamaged;
 
     private static boolean isDamaged = false;
     private int damageFrames = 0;
+
+    protected boolean hasGun= false;
 
     public Player(double x, double y, int width, int height, BufferedImage sprite) {
         super(x, y, width, height, sprite);
@@ -39,10 +44,12 @@ public class Player extends Entity {
     public void update() {
         moved = false;
         if (right && rightTileIsFree(SPEED)) {
+            direction = directionRight;
             moved = true;
             this.setX(x += SPEED);
         }
         if (left && leftTileIsFree(SPEED)) {
+            direction = directionLeft;
             moved = true;
             this.setX(x -= SPEED);
         }
@@ -79,6 +86,7 @@ public class Player extends Entity {
 
         LifePack.checkLifePackCollision(Game.entityList);
         Ammo.checkAmmoCollision(Game.entityList);
+        Weapon.checkWeaponCollision(Game.entityList);
 
         Camera.setX(Camera.clamp(this.getX() - (Game.getWIDTH() / 2), 0, World.getWIDTH() * 16 - Game.getWIDTH()));
         Camera.setY(Camera.clamp(this.getY() - (Game.getHEIGHT() / 2), 0, World.getHEIGHT() * 16 - Game.getHEIGHT()));
@@ -117,24 +125,20 @@ public class Player extends Entity {
 
     public void render(Graphics graphics) {
         if (!isDamaged) {
-            if (!moved) {
-                graphics.drawImage(Game.spritesheet.getSprite(32, 0, 16, 16),
-                        this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
-            }
-            if (down) { //deveria ter uma animacao para idle e uma animacao para quando estiver andando para baixo
-                graphics.drawImage(Game.spritesheet.getSprite(32, 0, 16, 16),
-                        this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
-            }
-            if (right) {
+
+            if (direction == directionRight) {
                 graphics.drawImage(playerMovements.get("right")[currentAnimation], this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+                if (hasGun){
+                    graphics.drawImage(entities.get("bowRight"), this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+                }
             }
-            if (left) {
+            else if (direction == directionLeft) {
                 graphics.drawImage(playerMovements.get("left")[currentAnimation], this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+                if (hasGun){
+                    graphics.drawImage(entities.get("bowLeft"), this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+                }
             }
-            if (up) {
-                graphics.drawImage(Game.spritesheet.getSprite(48, 0, 16, 16),
-                        this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
-            }
+
         } else {
             graphics.drawImage(playerDamaged, this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
         }
@@ -194,5 +198,13 @@ public class Player extends Entity {
 
     public static void setDamaged(boolean damaged) {
         isDamaged = damaged;
+    }
+
+    public boolean isHasGun() {
+        return hasGun;
+    }
+
+    public void setHasGun(boolean hasGun) {
+        this.hasGun = hasGun;
     }
 }
