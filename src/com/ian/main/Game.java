@@ -1,8 +1,6 @@
 package com.ian.main;
 
-import com.ian.entities.Enemy;
-import com.ian.entities.Entity;
-import com.ian.entities.Player;
+import com.ian.entities.*;
 import com.ian.graphics.Spritesheet;
 import com.ian.graphics.Ui;
 import com.ian.world.World;
@@ -31,9 +29,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public static World world;
     public static List<Entity> entityList; //poderia ter feito uma map, talvez mais pesado, porem mais facil de acessar e pegar as entidades
-    public static Spritesheet spritesheet;
+    public static Spritesheet spritesheet = new Spritesheet("/Spritesheet.png");;
     public static Player player;
+//            PlayerLogic.p;
     public static List<Enemy> enemyList;
+    public static List<AmmoShoot> bullets;
     public Ui ui;
 
     public static Random random;
@@ -48,9 +48,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
         ui = new Ui();
         entityList = new ArrayList<>();
         enemyList = new ArrayList<>();
-        spritesheet = new Spritesheet("/Spritesheet.png");
-        player = new Player(0, 0, 16, 16, spritesheet.getSprite(32, 0, 16, 16));
+        player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
         entityList.add(player);
+        bullets = new ArrayList<>();
         world = new World("/WorldSpritesheet.png"); // World precisa ser depois do spritesheet, pois precisamos inicializar antes, se nao vai dar nullpointer
     }
 
@@ -76,8 +76,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public void update() {
         for (int i = 0; i < entityList.size(); i++) {
-            Entity actualEntity = entityList.get(i);
-            actualEntity.update();
+            entityList.get(i).update();
+        }
+
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).update();
         }
     }
 
@@ -97,6 +100,11 @@ public class Game extends Canvas implements Runnable, KeyListener {
         for (Entity entity : entityList) {
             entity.render(graphics);
         }
+
+        for (int i = 0; i < bullets.size(); i++) {
+            bullets.get(i).render(graphics);
+        }
+
         ui.render(graphics);
 
         graphics.dispose();
@@ -162,6 +170,9 @@ public class Game extends Canvas implements Runnable, KeyListener {
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
             player.setDown(true);
         }
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            player.setHasShooted(true);
+        }
     }
 
     @Override
@@ -175,6 +186,10 @@ public class Game extends Canvas implements Runnable, KeyListener {
             player.setUp(false);
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
             player.setDown(false);
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            player.setHasShooted(false);
         }
     }
 

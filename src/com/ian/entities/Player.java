@@ -33,6 +33,7 @@ public class Player extends Entity {
     private int damageFrames = 0;
 
     protected boolean hasGun= false;
+    private boolean hasShooted = false;
 
     public Player(double x, double y, int width, int height, BufferedImage sprite) {
         super(x, y, width, height, sprite);
@@ -84,6 +85,19 @@ public class Player extends Entity {
             }
         }
 
+            if (hasGun && hasShooted && ammo > 0) {
+                int dx;
+                hasShooted = false;
+                ammo--;
+                if (direction == directionRight) {
+                    dx = 1;
+                } else {
+                    dx = -1;
+                }
+                AmmoShoot bullet = new AmmoShoot(this.getX() + 10, this.getY() + 9, 50, 50, null, dx, 0, System.currentTimeMillis());
+                Game.bullets.add(bullet);
+            }
+
         LifePack.checkLifePackCollision(Game.entityList);
         Ammo.checkAmmoCollision(Game.entityList);
         Weapon.checkWeaponCollision(Game.entityList);
@@ -129,13 +143,13 @@ public class Player extends Entity {
             if (direction == directionRight) {
                 graphics.drawImage(playerMovements.get("right")[currentAnimation], this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
                 if (hasGun){
-                    graphics.drawImage(entities.get("bowRight"), this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+                    graphics.drawImage(entities.get("weaponRight"), this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
                 }
             }
             else if (direction == directionLeft) {
                 graphics.drawImage(playerMovements.get("left")[currentAnimation], this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
                 if (hasGun){
-                    graphics.drawImage(entities.get("bowLeft"), this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+                    graphics.drawImage(entities.get("weaponLeft"), this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
                 }
             }
 
@@ -200,11 +214,19 @@ public class Player extends Entity {
         isDamaged = damaged;
     }
 
-    public boolean isHasGun() {
+    public boolean hasGun() {
         return hasGun;
     }
 
     public void setHasGun(boolean hasGun) {
         this.hasGun = hasGun;
+    }
+
+    public boolean hasShooted() {
+        return hasShooted;
+    }
+
+    public void setHasShooted(boolean hasShooted) {
+        this.hasShooted = hasShooted;
     }
 }

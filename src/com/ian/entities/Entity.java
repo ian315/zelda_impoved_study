@@ -46,9 +46,10 @@ public class Entity {
         entities.put("lifePack", Game.spritesheet.getSprite(0,16, 16, 16));
         entities.put("bow", Game.spritesheet.getSprite(16,16, 16, 16));
         entities.put("ammo", Game.spritesheet.getSprite(32,16, 16, 16));
+        entities.put("bullet", Game.spritesheet.getSprite(48,32, 16, 16));
         entities.put("slime", Game.spritesheet.getSprite(48,16, 16, 16));
-        entities.put("bowRight", Game.spritesheet.getSprite(16,32, 16, 16));
-        entities.put("bowLeft", Game.spritesheet.getSprite(32,32, 16, 16));
+        entities.put("weaponRight", Game.spritesheet.getSprite(16,32, 16, 16));
+        entities.put("weaponLeft", Game.spritesheet.getSprite(32,32, 16, 16));
     }
 
     public static boolean hasEntityCollide(Entity entity1, Entity entity2) {
@@ -66,19 +67,19 @@ public class Entity {
 
     }
 
-    protected boolean rightTileIsFree(double SPEED) {
+    public boolean rightTileIsFree(double SPEED) {
         return World.isTileFree((int) (this.getX() + SPEED), this.getY());
     }
 
-    protected boolean leftTileIsFree(double SPEED) {
+    public boolean leftTileIsFree(double SPEED) {
         return World.isTileFree((int) (this.getX() - SPEED), this.getY());
     }
 
-    protected boolean upTileIsFree(double SPEED) {
+    public boolean upTileIsFree(double SPEED) {
         return World.isTileFree(this.getX(), (int) (this.getY() - SPEED));
     }
 
-    protected boolean downTileIsFree(double SPEED) {
+    public boolean downTileIsFree(double SPEED) {
         return World.isTileFree(this.getX(), (int) (this.getY() + SPEED));
     }
 
