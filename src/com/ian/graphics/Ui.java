@@ -1,11 +1,9 @@
 package com.ian.graphics;
 
-import com.ian.entities.Enemy;
 import com.ian.entities.Player;
 import com.ian.main.Game;
 
 import java.awt.*;
-import java.util.List;
 
 public class Ui {
 

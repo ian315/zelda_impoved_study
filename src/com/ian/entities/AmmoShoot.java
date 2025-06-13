@@ -3,7 +3,6 @@ package com.ian.entities;
 import com.ian.main.Game;
 import com.ian.world.Camera;
 import com.ian.world.World;
-import org.ietf.jgss.GSSManager;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
