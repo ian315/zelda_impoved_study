@@ -16,6 +16,7 @@ public class Player extends Entity {
     private int direction;
     private int directionRight = 0;
     private int directionLeft = 1;
+    public int mouseX, mouseY;
     private boolean moved;
     private final double SPEED = 1;
 
@@ -33,7 +34,8 @@ public class Player extends Entity {
     private int damageFrames = 0;
 
     protected boolean hasGun= false;
-    private boolean hasShooted = false;
+    private boolean hasShootedKeyboard = false;
+    private boolean mouseShoot = false;
 
     public Player(double x, double y, int width, int height, BufferedImage sprite) {
         super(x, y, width, height, sprite);
@@ -85,18 +87,8 @@ public class Player extends Entity {
             }
         }
 
-            if (hasGun && hasShooted && ammo > 0) {
-                int dx;
-                hasShooted = false;
-                ammo--;
-                if (direction == directionRight) {
-                    dx = 1;
-                } else {
-                    dx = -1;
-                }
-                AmmoShoot bullet = new AmmoShoot(this.getX() + 10, this.getY() + 9, 50, 50, null, dx, 0, System.currentTimeMillis());
-                Game.bullets.add(bullet);
-            }
+        shoots();
+
 
         LifePack.checkLifePackCollision(Game.entityList);
         Ammo.checkAmmoCollision(Game.entityList);
@@ -106,6 +98,51 @@ public class Player extends Entity {
         Camera.setY(Camera.clamp(this.getY() - (Game.getHEIGHT() / 2), 0, World.getHEIGHT() * 16 - Game.getHEIGHT()));
 
         gameOver();
+    }
+
+    public void shoots () {
+//        if (mouseShoot) {
+//            double angle = Math.toDegrees(Math.atan2(mouseY - (this.getY() - Camera.getY()), mouseX - (this.getX() - Camera.getX())));
+//            System.out.println(angle);
+//        }
+        if (hasGun &&  ammo > 0) {
+            if (hasShootedKeyboard) {
+                int dx = 0;
+
+                hasShootedKeyboard = false;
+                ammo--;
+
+                if (direction == directionRight) {
+                    dx = 1;
+                } else {
+                    dx = -1;
+                }
+                AmmoShoot bullet = new AmmoShoot(this.getX() + 10, this.getY() + 9, 3, 3, null, dx, 0, System.currentTimeMillis());
+                Game.bullets.add(bullet);
+            }
+
+            if (mouseShoot){
+                mouseShoot = false;
+                ammo--;
+                double angle = 0;
+                int py = 9;
+                int px;
+
+                if (direction == directionRight) {
+                    px = 10;
+                    angle = Math.atan2(mouseY - (this.getY() + py - Camera.getY()), mouseX - (this.getX() + px - Camera.getX()));
+                } else {
+                    px = -5;
+                    angle = Math.atan2(mouseY - (this.getY() + py - Camera.getY()), mouseX - (this.getX() - px - Camera.getX()));
+                }
+
+                double dx = Math.cos(angle);
+                double dy = Math.sin(angle);
+
+                AmmoShoot bullet = new AmmoShoot(this.getX() + px, this.getY() + py, 3, 3, null, dx, dy, System.currentTimeMillis());
+                Game.bullets.add(bullet);
+            }
+        }
     }
 
     public BufferedImage[] getPlayerRightMovement() {
@@ -223,10 +260,34 @@ public class Player extends Entity {
     }
 
     public boolean hasShooted() {
-        return hasShooted;
+        return hasShootedKeyboard;
     }
 
-    public void setHasShooted(boolean hasShooted) {
-        this.hasShooted = hasShooted;
+    public void setHasShootedKeyboard(boolean hasShootedKeyboard) {
+        this.hasShootedKeyboard = hasShootedKeyboard;
+    }
+
+    public boolean isMouseShoot() {
+        return mouseShoot;
+    }
+
+    public void setMouseShoot(boolean mouseShoot) {
+        this.mouseShoot = mouseShoot;
+    }
+
+    public int getMouseX() {
+        return mouseX;
+    }
+
+    public void setMouseX(int mouseX) {
+        this.mouseX = mouseX;
+    }
+
+    public int getMouseY() {
+        return mouseY;
+    }
+
+    public void setMouseY(int mouseY) {
+        this.mouseY = mouseY;
     }
 }

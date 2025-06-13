@@ -1,6 +1,7 @@
 package com.ian.entities;
 
 import com.ian.main.Game;
+import com.ian.world.Camera;
 import com.ian.world.World;
 
 import java.awt.*;
@@ -9,9 +10,63 @@ import java.awt.image.BufferedImage;
 public class Enemy extends Entity {
 
     private double SPEED = 1;
+    private int life = 10;
+    private boolean isDamaged = false;
+    int damageFrames = 0;
 
     public Enemy(double x, double y, int width, int height, BufferedImage sprite) {
         super(x, y, width, height, sprite);
+    }
+
+    public void destroyEnemy() {
+        Game.entityList.remove(this);
+    }
+
+    private void enemyCollisionWithBullet() {
+        for (int i = 0; i <Game.bullets.size(); i++) {
+            Entity entity = Game.bullets.get(i);
+
+            if (entity instanceof AmmoShoot){
+                if (Entity.hasEntityCollide(this, entity)) {
+                    isDamaged = true;
+                    life -= Game.random.nextInt(2, 4);
+                    System.out.println(this.life);
+                    Game.bullets.remove(i);
+                    return;
+                }
+            }
+        }
+    }
+
+    public boolean hasPlayerCollided() {
+        Rectangle enemy = new Rectangle(this.getX(), this.getY(), World.TILE_SIZE, World.TILE_SIZE);
+        Rectangle player = new Rectangle(Game.player.getX(), Game.player.getY(), World.TILE_SIZE, World.TILE_SIZE);
+
+        return enemy.intersects(player);
+    }
+
+    public boolean isNotColiding(int nextPositionX, int nextPositionY) {
+        Rectangle enemyCurrent = new Rectangle(nextPositionX, nextPositionY, World.TILE_SIZE, World.TILE_SIZE);
+
+        for (Enemy enemy : Game.enemyList) {
+            if (enemy == this) {
+                continue;
+            }
+
+            Rectangle nextEnemy = new Rectangle(enemy.getX(), enemy.getY(), World.TILE_SIZE, World.TILE_SIZE);
+            if (enemyCurrent.intersects(nextEnemy)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void render (Graphics graphics){
+        if (!isDamaged) {
+            graphics.drawImage(Entity.entities.get("slime"), this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+        } else {
+            graphics.drawImage(Entity.entities.get("slimeFeedback"), this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+        }
     }
 
     public void update() {
@@ -38,28 +93,19 @@ public class Enemy extends Entity {
                 Player.setDamaged(true);
             }
         }
-    }
 
-    public boolean hasPlayerCollided() {
-        Rectangle enemy = new Rectangle(this.getX(), this.getY(), World.TILE_SIZE, World.TILE_SIZE);
-        Rectangle player = new Rectangle(Game.player.getX(), Game.player.getY(), World.TILE_SIZE, World.TILE_SIZE);
+        enemyCollisionWithBullet();
 
-        return enemy.intersects(player);
-    }
-
-    public boolean isNotColiding(int nextPositionX, int nextPositionY) {
-        Rectangle enemyCurrent = new Rectangle(nextPositionX, nextPositionY, World.TILE_SIZE, World.TILE_SIZE);
-
-        for (Enemy enemy : Game.enemyList) {
-            if (enemy == this) {
-                continue;
-            }
-
-            Rectangle nextEnemy = new Rectangle(enemy.getX(), enemy.getY(), World.TILE_SIZE, World.TILE_SIZE);
-            if (enemyCurrent.intersects(nextEnemy)) {
-                return false;
+        if (isDamaged) {
+            damageFrames++;
+            if (damageFrames == 6) {
+                damageFrames = 0;
+                isDamaged = false;
             }
         }
-        return true;
+
+        if (life <= 0) {
+            destroyEnemy();
+        }
     }
 }

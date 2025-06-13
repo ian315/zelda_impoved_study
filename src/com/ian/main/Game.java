@@ -9,6 +9,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.Random;
 
 
-public class Game extends Canvas implements Runnable, KeyListener {
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
     private boolean isRunning;
     private Thread thread;
 
@@ -31,7 +33,6 @@ public class Game extends Canvas implements Runnable, KeyListener {
     public static List<Entity> entityList; //poderia ter feito uma map, talvez mais pesado, porem mais facil de acessar e pegar as entidades
     public static Spritesheet spritesheet = new Spritesheet("/Spritesheet.png");;
     public static Player player;
-//            PlayerLogic.p;
     public static List<Enemy> enemyList;
     public static List<AmmoShoot> bullets;
     public Ui ui;
@@ -40,6 +41,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public Game() {
         addKeyListener(this);
+        addMouseListener(this);
         this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         initializeFrame();
         random = new Random();
@@ -171,7 +173,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
             player.setDown(true);
         }
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            player.setHasShooted(true);
+            player.setHasShootedKeyboard(true);
         }
     }
 
@@ -189,7 +191,7 @@ public class Game extends Canvas implements Runnable, KeyListener {
         }
 
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-            player.setHasShooted(false);
+            player.setHasShootedKeyboard(false);
         }
     }
 
@@ -199,5 +201,32 @@ public class Game extends Canvas implements Runnable, KeyListener {
 
     public static int getHEIGHT() {
         return HEIGHT;
+    }
+
+    @Override
+    public void mouseClicked(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+        player.setMouseShoot(true);
+        player.mouseX = e.getX() / 3;
+        player.mouseY = e.getY() / 3;
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        player.setMouseShoot(false);
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }
