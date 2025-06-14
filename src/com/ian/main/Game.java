@@ -24,6 +24,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
     public static JFrame frame;
     public BufferedImage bufferedImage;
+    private int CUR_LEVEL = 1, MAX_LEVEL = 2;
 
     private static final int WIDTH = 240;
     private static final int HEIGHT = 160;
@@ -53,7 +54,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
         entityList.add(player);
         bullets = new ArrayList<>();
-        world = new World("/WorldSpritesheet.png"); // World precisa ser depois do spritesheet, pois precisamos inicializar antes, se nao vai dar nullpointer
+        world = new World("/level1.png"); // World precisa ser depois do spritesheet, pois precisamos inicializar antes, se nao vai dar nullpointer
     }
 
     public static void main(String[] args) {
@@ -83,6 +84,15 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).update();
+        }
+
+        if (enemyList.isEmpty()){
+            CUR_LEVEL++;
+            if (CUR_LEVEL > MAX_LEVEL){
+                CUR_LEVEL = 1;
+            }
+            String newWorld = "level" + CUR_LEVEL + ".png";
+            World.restartGame(newWorld);
         }
     }
 

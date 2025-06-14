@@ -1,12 +1,14 @@
 package com.ian.world;
 
 import com.ian.entities.*;
+import com.ian.graphics.Spritesheet;
 import com.ian.main.Game;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class World {
@@ -72,6 +74,15 @@ public class World {
                 tile.render(graphics);
             }
         }
+    }
+
+    public static void restartGame(String level) {
+        Game.entityList = new ArrayList<>();
+        Game.enemyList = new ArrayList<>();
+        Game.spritesheet = new Spritesheet("/Spritesheet.png");
+        Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
+        Game.entityList.add(Game.player);
+        Game.world = new World("/" + level);
     }
 
     public static boolean isTileFree(int nextPositionX, int nextPositionY){

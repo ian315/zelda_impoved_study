@@ -19,6 +19,7 @@ public class Enemy extends Entity {
     }
 
     public void destroyEnemy() {
+        Game.enemyList.remove(this);
         Game.entityList.remove(this);
     }
 
@@ -30,7 +31,6 @@ public class Enemy extends Entity {
                 if (Entity.hasEntityCollide(this, entity)) {
                     isDamaged = true;
                     life -= Game.random.nextInt(2, 4);
-                    System.out.println(this.life);
                     Game.bullets.remove(i);
                     return;
                 }

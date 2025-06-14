@@ -73,7 +73,7 @@ public class Player extends Entity {
                 if (left && currentAnimation >= playerMovements.get("left").length) {
                     currentAnimation = 0;
                 }
-                if (right && currentAnimation >= playerMovements.get("left").length) {
+                if (right && currentAnimation >= playerMovements.get("right").length) {
                     currentAnimation = 0;
                 }
             }
@@ -97,7 +97,9 @@ public class Player extends Entity {
         Camera.setX(Camera.clamp(this.getX() - (Game.getWIDTH() / 2), 0, World.getWIDTH() * 16 - Game.getWIDTH()));
         Camera.setY(Camera.clamp(this.getY() - (Game.getHEIGHT() / 2), 0, World.getHEIGHT() * 16 - Game.getHEIGHT()));
 
-        gameOver();
+        if (life <= 0) {
+//            World.restartGame(Game.);
+        }
     }
 
     public void shoots () {
@@ -161,17 +163,6 @@ public class Player extends Entity {
             leftMovement[i] = Game.spritesheet.getSprite(112 + (i * 16), 0, 16, 16);
         }
         return leftMovement;
-    }
-
-    public void gameOver() {
-        if (life <= 0) {
-            Game.entityList = new ArrayList<>();
-            Game.enemyList = new ArrayList<>();
-            Game.spritesheet = new Spritesheet("/Spritesheet.png");
-            Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
-            Game.entityList.add(Game.player);
-            Game.world = new World("/WorldSpritesheet.png");
-        }
     }
 
     public void render(Graphics graphics) {
