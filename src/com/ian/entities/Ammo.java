@@ -15,7 +15,7 @@ public class Ammo extends Entity{
             Entity actualEntity = entities.get(i);
             if (actualEntity instanceof Ammo){
                 if (hasEntityCollide(Game.player, actualEntity)){
-                    Player.setAmmo(Player.getAmmo() + 100);
+                    Player.setAmmo(Player.getAmmo() + 15);
                     entities.remove(actualEntity);
                 }
             }

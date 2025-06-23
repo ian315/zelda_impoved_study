@@ -98,7 +98,8 @@ public class Player extends Entity {
         Camera.setY(Camera.clamp(this.getY() - (Game.getHEIGHT() / 2), 0, World.getHEIGHT() * 16 - Game.getHEIGHT()));
 
         if (life <= 0) {
-//            World.restartGame(Game.);
+            life = 0;
+            Game.setGameState("GAME_OVER");
         }
     }
 
@@ -167,7 +168,6 @@ public class Player extends Entity {
 
     public void render(Graphics graphics) {
         if (!isDamaged) {
-
             if (direction == directionRight) {
                 graphics.drawImage(playerMovements.get("right")[currentAnimation], this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
                 if (hasGun){
@@ -183,6 +183,16 @@ public class Player extends Entity {
 
         } else {
             graphics.drawImage(playerDamaged, this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+            if (hasGun) {
+                if (direction == directionRight) {
+                    graphics.drawImage(entities.get("weaponFeedbackRight"),
+                            this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+                }
+                if (direction == directionLeft) {
+                    graphics.drawImage(entities.get("weaponFeedbackLeft"),
+                            this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+                }
+            }
         }
     }
 

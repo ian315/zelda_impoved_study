@@ -35,6 +35,6 @@ public class AmmoShoot extends Entity{
     }
 
     public void render(Graphics graphics) {
-        graphics.drawImage(entities.get("bullet"), this.getX() - Camera.getX(), this.getY() - Camera.getY(), 6, 6, null);
+        graphics.drawImage(entities.get("bullet"), this.getX() - Camera.getX(), this.getY() - Camera.getY(), this.getWidth(), this.getHeight(), null);
     }
 }

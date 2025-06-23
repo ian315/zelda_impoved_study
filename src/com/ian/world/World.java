@@ -79,6 +79,7 @@ public class World {
     public static void restartGame(String level) {
         Game.entityList = new ArrayList<>();
         Game.enemyList = new ArrayList<>();
+        Game.bullets = new ArrayList<>();
         Game.spritesheet = new Spritesheet("/Spritesheet.png");
         Game.player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
         Game.entityList.add(Game.player);
