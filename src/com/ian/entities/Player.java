@@ -94,8 +94,8 @@ public class Player extends Entity {
         Ammo.checkAmmoCollision(Game.entityList);
         Weapon.checkWeaponCollision(Game.entityList);
 
-        Camera.setX(Camera.clamp(this.getX() - (Game.getWIDTH() / 2), 0, World.getWIDTH() * 16 - Game.getWIDTH()));
-        Camera.setY(Camera.clamp(this.getY() - (Game.getHEIGHT() / 2), 0, World.getHEIGHT() * 16 - Game.getHEIGHT()));
+        Camera.setX(Camera.clamp(this.getX() - (Game.WIDTH / 2), 0, World.getWIDTH() * 16 - Game.WIDTH));
+        Camera.setY(Camera.clamp(this.getY() - (Game.HEIGHT / 2), 0, World.getHEIGHT() * 16 - Game.HEIGHT));
 
         if (life <= 0) {
             life = 0;

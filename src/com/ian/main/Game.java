@@ -1,6 +1,7 @@
 package com.ian.main;
 
 import com.ian.entities.*;
+import com.ian.graphics.GameMenu;
 import com.ian.graphics.Spritesheet;
 import com.ian.graphics.Ui;
 import com.ian.world.World;
@@ -27,9 +28,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
     public BufferedImage bufferedImage;
     private int CUR_LEVEL = 1, MAX_LEVEL = 2;
 
-    private static final int WIDTH = 240;
-    private static final int HEIGHT = 160;
-    private final int SCALE = 3;
+    public static final int WIDTH = 240;
+    public static final int HEIGHT = 160;
+    public static final int SCALE = 3;
 
     public static World world;
     public static List<Entity> entityList; //poderia ter feito uma map, talvez mais pesado, porem mais facil de acessar e pegar as entidades
@@ -38,6 +39,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
     public static List<Enemy> enemyList;
     public static List<AmmoShoot> bullets;
     public Ui ui;
+    public GameMenu menu;
 
     private static String gameState = "MENU";
     private boolean showMessageGameOver = true;
@@ -55,6 +57,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         //Aqui inicializa os objetos
         bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         ui = new Ui();
+        menu = new GameMenu();
         entityList = new ArrayList<>();
         enemyList = new ArrayList<>();
         player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
@@ -116,6 +119,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
                 World.restartGame(newWorld);
                 System.out.println("game restarted");
             }
+        } else if (Objects.equals(gameState, "MENU")) {
+            menu.update();
         }
     }
 
@@ -147,6 +152,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         graphics.drawImage(bufferedImage, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
 
         if (Objects.equals(gameState, "GAME_OVER")){
+
             Graphics2D graphics2D = (Graphics2D) graphics;
             graphics2D.setColor(new Color(0, 0, 0, 100));
             graphics2D.fillRect(0, 0, WIDTH * SCALE, HEIGHT * SCALE);
@@ -155,6 +161,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
             graphics2D.drawString("Game Over", (WIDTH * SCALE) / 2 - 98, (HEIGHT * SCALE) / 2 + 8);
             if (showMessageGameOver)
                 graphics2D.drawString("Press ENTER to restart", (WIDTH * SCALE) / 2 - 180, (HEIGHT * SCALE) / 2 + 60);
+        }
+
+        else if (Objects.equals(gameState, "MENU")) {
+            menu.render(graphics);
         }
 
         bufferStrategy.show();
@@ -201,6 +211,14 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         frame.setVisible(true);
     }
 
+    public static String getGameState() {
+        return gameState;
+    }
+
+    public static void setGameState(String gameState) {
+        Game.gameState = gameState;
+    }
+
     @Override
     public void keyTyped(KeyEvent e) {
     }
@@ -209,19 +227,38 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
             player.setRight(true);
-        } else if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
+        }
+        if (e.getKeyCode() == KeyEvent.VK_LEFT || e.getKeyCode() == KeyEvent.VK_A) {
             player.setLeft(true);
         }
         if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
             player.setUp(true);
-        } else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
-            player.setDown(true);
+            if (Objects.equals(gameState, "MENU")) {
+                menu.setUp(true);
+            }
         }
+        if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
+            player.setDown(true);
+            if (Objects.equals(gameState, "MENU")) {
+                menu.setDown(true);
+            }
+        }
+
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             player.setHasShootedKeyboard(true);
         }
+
         if (e.getKeyCode() == KeyEvent.VK_ENTER) {
             restartGame = true;
+
+            if (Objects.equals(gameState, "MENU")) {
+                menu.setEnter(true);
+            }
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+            setGameState("MENU");
+            GameMenu.setPause(true);
         }
     }
 
@@ -234,30 +271,28 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         }
         if (e.getKeyCode() == KeyEvent.VK_UP || e.getKeyCode() == KeyEvent.VK_W) {
             player.setUp(false);
+
+            if (Objects.equals(gameState, "MENU")) {
+                menu.setUp(false);
+            }
         } else if (e.getKeyCode() == KeyEvent.VK_DOWN || e.getKeyCode() == KeyEvent.VK_S) {
             player.setDown(false);
+
+            if (Objects.equals(gameState, "MENU")) {
+                menu.setDown(false);
+            }
         }
 
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             player.setHasShootedKeyboard(false);
         }
+
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+
+            menu.setEnter(false);
+        }
     }
 
-    public static int getWIDTH() {
-        return WIDTH;
-    }
-
-    public static int getHEIGHT() {
-        return HEIGHT;
-    }
-
-    public static String getGameState() {
-        return gameState;
-    }
-
-    public static void setGameState(String gameState) {
-        Game.gameState = gameState;
-    }
 
     @Override
     public void mouseClicked(MouseEvent e) {

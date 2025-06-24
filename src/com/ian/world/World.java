@@ -61,8 +61,8 @@ public class World {
         int xStart = Camera.getX() >> 4;
         int yStart = Camera.getY() >> 4;
 
-        int xFinal = xStart + (Game.getWIDTH() >> 4);
-        int yFinal = yStart + (Game.getHEIGHT() >> 4);
+        int xFinal = xStart + (Game.WIDTH >> 4);
+        int yFinal = yStart + (Game.HEIGHT >> 4);
 
         for (int positionX = xStart; positionX <= xFinal; positionX++) {
             for (int positionY = yStart; positionY <= yFinal; positionY++) {
