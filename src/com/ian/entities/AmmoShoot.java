@@ -8,8 +8,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public class AmmoShoot extends Entity{
-    private double directionX, directionY;
-    private double bulletSpeed = 4;
+    private final double directionX;
+    private final double directionY;
     public long bulletLife;
 
     public AmmoShoot(double x, double y, int width, int height, BufferedImage sprite, double dx, double dy, long bulletLife) {
@@ -22,6 +22,7 @@ public class AmmoShoot extends Entity{
     public void update() {
         long now = System.currentTimeMillis();
 
+        double bulletSpeed = 4;
         x += directionX * bulletSpeed;
         y += directionY * bulletSpeed;
 

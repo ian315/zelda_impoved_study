@@ -58,7 +58,7 @@ public class GameMenu {
         graphics.drawString("GAME NAME", WIDTH / 2 - 160, HEIGHT / 2 - 180);
 
         graphics.setColor(Color.WHITE);
-        if (pause == false)
+        if (!pause)
             graphics.drawString("New Game", WIDTH / 2 - 160, HEIGHT / 2 - 50);
         else
             graphics.drawString("Continuar", WIDTH / 2 - 160, HEIGHT / 2 - 50);

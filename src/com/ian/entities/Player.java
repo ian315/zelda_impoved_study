@@ -135,10 +135,6 @@ public class Player extends Entity {
     }
 
     public void shoots () {
-//        if (mouseShoot) {
-//            double angle = Math.toDegrees(Math.atan2(mouseY - (this.getY() - Camera.getY()), mouseX - (this.getX() - Camera.getX())));
-//            System.out.println(angle);
-//        }
         if (hasGun &&  ammo > 0) {
             if (hasShootedKeyboard) {
                 int dx = 0;

@@ -105,17 +105,9 @@ public class World {
                 || (tiles[x4 + (y4 * World.WIDTH)] instanceof TileWall))) {
             return true;
         }
-        System.out.println(!((tiles[x1 + (y1 * World.WIDTH)] instanceof TileWall)
-                || (tiles[x2 + (y2 * World.WIDTH)] instanceof TileWall)
-                || (tiles[x3 + (y3 * World.WIDTH)] instanceof TileWall)
-                || (tiles[x4 + (y4 * World.WIDTH)] instanceof TileWall)));
 
         int zPlayer = Game.player.z;
-        if (zPlayer > 0) {
-            return true;
-        }
-
-        return false;
+        return zPlayer > 0;
     }
 
     public static int getWIDTH() {

@@ -120,7 +120,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
                 restartGame = false;
                 setGameState("NORMAL");
                 World.restartGame(newWorld);
-                System.out.println("game restarted");
             }
         } else if (Objects.equals(gameState, "MENU")) {
             menu.update();

@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 
 public class Enemy extends Entity {
 
-    private double SPEED = 1;
+    private final double SPEED = 1;
     private int life = 10;
     private boolean isDamaged = false;
     int damageFrames = 0;
@@ -50,7 +50,7 @@ public class Enemy extends Entity {
         return false;
     }
 
-    public boolean isNotColiding(int nextPositionX, int nextPositionY) {
+    public boolean isNotColliding(int nextPositionX, int nextPositionY) {
         Rectangle enemyCurrent = new Rectangle(nextPositionX, nextPositionY, World.TILE_SIZE, World.TILE_SIZE);
 
         for (Enemy enemy : Game.enemyList) {
@@ -80,15 +80,15 @@ public class Enemy extends Entity {
 
         if (!hasPlayerCollided()) {
             if (Game.random.nextInt(100) < 45) {
-                if (x < Game.player.getX() && rightTileIsFree(SPEED) && isNotColiding((int) (this.getX() + SPEED), this.getY())) {
+                if (x < Game.player.getX() && rightTileIsFree(SPEED) && isNotColliding((int) (this.getX() + SPEED), this.getY())) {
                     x += SPEED;
-                } else if (x > Game.player.getX() && leftTileIsFree(SPEED) && isNotColiding((int) (this.getX() - SPEED), this.getY())) {
+                } else if (x > Game.player.getX() && leftTileIsFree(SPEED) && isNotColliding((int) (this.getX() - SPEED), this.getY())) {
                     x -= SPEED;
                 }
 
-                else if (y < Game.player.getY() && downTileIsFree(SPEED) && isNotColiding(this.getX(), (int) (this.getY() + SPEED))) {
+                else if (y < Game.player.getY() && downTileIsFree(SPEED) && isNotColliding(this.getX(), (int) (this.getY() + SPEED))) {
                     y += SPEED;
-                } else if (y > Game.player.getY() && upTileIsFree(SPEED) && isNotColiding(this.getX(), (int) (this.getY() - SPEED))) {
+                } else if (y > Game.player.getY() && upTileIsFree(SPEED) && isNotColliding(this.getX(), (int) (this.getY() - SPEED))) {
                     y -= SPEED;
                 }
             }

@@ -9,7 +9,6 @@ import java.util.Objects;
 public class Audios {
 
     private Clip clip = AudioSystem.getClip();
-//    private static final Audios musicBackground;
     public static final Audios hit;
 
     static {
