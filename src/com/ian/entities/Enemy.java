@@ -1,5 +1,6 @@
 package com.ian.entities;
 
+import com.ian.audio.Audios;
 import com.ian.main.Game;
 import com.ian.world.Camera;
 import com.ian.world.World;
@@ -29,6 +30,7 @@ public class Enemy extends Entity {
 
             if (entity instanceof AmmoShoot){
                 if (Entity.hasEntityCollide(this, entity)) {
+                    Audios.hit.play();
                     isDamaged = true;
                     life -= Game.random.nextInt(2, 4);
                     Game.bullets.remove(i);
@@ -41,8 +43,11 @@ public class Enemy extends Entity {
     public boolean hasPlayerCollided() {
         Rectangle enemy = new Rectangle(this.getX(), this.getY(), World.TILE_SIZE, World.TILE_SIZE);
         Rectangle player = new Rectangle(Game.player.getX(), Game.player.getY(), World.TILE_SIZE, World.TILE_SIZE);
+        if (enemy.intersects(player) && this.z == Game.player.z) {
+            return true;
+        }
 
-        return enemy.intersects(player);
+        return false;
     }
 
     public boolean isNotColiding(int nextPositionX, int nextPositionY) {
@@ -75,20 +80,21 @@ public class Enemy extends Entity {
 
         if (!hasPlayerCollided()) {
             if (Game.random.nextInt(100) < 45) {
-                if ((int) x < Game.player.getX() && rightTileIsFree(SPEED) && isNotColiding((int) (this.getX() + SPEED), this.getY())) {
+                if (x < Game.player.getX() && rightTileIsFree(SPEED) && isNotColiding((int) (this.getX() + SPEED), this.getY())) {
                     x += SPEED;
-                } else if ((int) x > Game.player.getX() && leftTileIsFree(SPEED) && isNotColiding((int) (this.getX() - SPEED), this.getY())) {
+                } else if (x > Game.player.getX() && leftTileIsFree(SPEED) && isNotColiding((int) (this.getX() - SPEED), this.getY())) {
                     x -= SPEED;
                 }
 
-                else if ((int) y < Game.player.getY() && downTileIsFree(SPEED) && isNotColiding(this.getX(), (int) (this.getY() + SPEED))) {
+                else if (y < Game.player.getY() && downTileIsFree(SPEED) && isNotColiding(this.getX(), (int) (this.getY() + SPEED))) {
                     y += SPEED;
-                } else if ((int) y > Game.player.getY() && upTileIsFree(SPEED) && isNotColiding(this.getX(), (int) (this.getY() - SPEED))) {
+                } else if (y > Game.player.getY() && upTileIsFree(SPEED) && isNotColiding(this.getX(), (int) (this.getY() - SPEED))) {
                     y -= SPEED;
                 }
             }
         } else {
             if (Game.random.nextInt(100) < 10) {
+                Audios.hit.play();
                 Game.player.life -= Game.random.nextInt(3);
                 Player.setDamaged(true);
             }

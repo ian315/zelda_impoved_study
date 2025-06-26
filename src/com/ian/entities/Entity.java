@@ -12,6 +12,7 @@ import java.util.Map;
 public class Entity {
     protected double x;
     protected double y;
+    protected int z;
     protected int width;
     protected int height;
 
@@ -58,8 +59,11 @@ public class Entity {
     public static boolean hasEntityCollide(Entity entity1, Entity entity2) {
         Rectangle entityHitBox1 = new Rectangle(entity1.getX() + entity1.hitBoxX, entity1.getY() + entity1.hitBoxY, entity1.hitBoxWidth, entity1.hitBoxHeight);
         Rectangle entityHitBox2 = new Rectangle(entity2.getX() + entity2.hitBoxX, entity2.getY() + entity2.hitBoxY, entity2.hitBoxWidth, entity2.hitBoxHeight);
+        if (entityHitBox1.intersects(entityHitBox2) && entity1.z == entity2.z) {
+            return true;
+        }
 
-        return entityHitBox1.intersects(entityHitBox2);
+        return false;
     }
 
     public void render(Graphics graphics) {

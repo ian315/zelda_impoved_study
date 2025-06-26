@@ -1,5 +1,6 @@
 package com.ian.main;
 
+import com.ian.audio.Audios;
 import com.ian.entities.*;
 import com.ian.graphics.GameMenu;
 import com.ian.graphics.Spritesheet;
@@ -49,6 +50,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
     public static Random random;
 
     public Game() {
+//      para adicionar uma musica de background basta iniciar aqui
+//        Audios.backgroundMusic.loop();
         addKeyListener(this);
         addMouseListener(this);
         this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
@@ -259,6 +262,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
             setGameState("MENU");
             GameMenu.setPause(true);
+        }
+
+        if (e.getKeyCode() == KeyEvent.VK_Z) {
+            player.setJump(true);
         }
     }
 

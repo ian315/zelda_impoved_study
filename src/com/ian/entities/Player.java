@@ -1,21 +1,19 @@
 package com.ian.entities;
 
-import com.ian.graphics.Spritesheet;
 import com.ian.main.Game;
 import com.ian.world.Camera;
 import com.ian.world.World;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Player extends Entity {
     public boolean right, left, up, down;
     private int direction;
-    private int directionRight = 0;
-    private int directionLeft = 1;
+    private final int directionRight = 0;
+    private final int directionLeft = 1;
     public int mouseX, mouseY;
     private boolean moved;
     private final double SPEED = 1;
@@ -29,6 +27,14 @@ public class Player extends Entity {
     public int currentAnimation = 0;
     private final Map<String, BufferedImage[]> playerMovements = new HashMap<>();
     private final BufferedImage playerDamaged;
+
+    private boolean jump = false;
+    private boolean isJumping = false;
+    private boolean jumpUp = false;
+    private boolean jumpDown = false;
+    private final int maxJumpRange = 45;
+    private int currentJumpRange = 0;
+    public int z = 0;
 
     private static boolean isDamaged = false;
     private int damageFrames = 0;
@@ -45,6 +51,31 @@ public class Player extends Entity {
     }
 
     public void update() {
+        if (jump) {
+            if (!isJumping) {
+                isJumping = true;
+                jump = false;
+                jumpUp = true;
+            }
+        }
+
+        if (isJumping) {
+            if (jumpUp) {
+                currentJumpRange += 2;
+            } else if (jumpDown) {
+                currentJumpRange -= 2;
+                if (currentJumpRange <= 0) {
+                    isJumping = false;
+                    jumpDown = false;
+                }
+            }
+            z = currentJumpRange;
+            if (currentJumpRange >= maxJumpRange) {
+                jumpDown = true;
+                jumpUp = false;
+            }
+        }
+
         moved = false;
         if (right && rightTileIsFree(SPEED)) {
             direction = directionRight;
@@ -169,28 +200,26 @@ public class Player extends Entity {
     public void render(Graphics graphics) {
         if (!isDamaged) {
             if (direction == directionRight) {
-                graphics.drawImage(playerMovements.get("right")[currentAnimation], this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+                graphics.drawImage(playerMovements.get("right")[currentAnimation], this.getX() - Camera.getX(), this.getY() - Camera.getY() - z, null);
                 if (hasGun){
-                    graphics.drawImage(entities.get("weaponRight"), this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+                    graphics.drawImage(entities.get("weaponRight"), this.getX() - Camera.getX(), this.getY() - Camera.getY() - z, null);
                 }
             }
             else if (direction == directionLeft) {
-                graphics.drawImage(playerMovements.get("left")[currentAnimation], this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+                graphics.drawImage(playerMovements.get("left")[currentAnimation], this.getX() - Camera.getX(), this.getY() - Camera.getY() - z, null);
                 if (hasGun){
-                    graphics.drawImage(entities.get("weaponLeft"), this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+                    graphics.drawImage(entities.get("weaponLeft"), this.getX() - Camera.getX(), this.getY() - Camera.getY() - z, null);
                 }
             }
 
         } else {
-            graphics.drawImage(playerDamaged, this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+            graphics.drawImage(playerDamaged, this.getX() - Camera.getX(), this.getY() - Camera.getY() - z, null);
             if (hasGun) {
                 if (direction == directionRight) {
-                    graphics.drawImage(entities.get("weaponFeedbackRight"),
-                            this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+                    graphics.drawImage(entities.get("weaponFeedbackRight"), this.getX() - Camera.getX(), this.getY() - Camera.getY() - z, null);
                 }
                 if (direction == directionLeft) {
-                    graphics.drawImage(entities.get("weaponFeedbackLeft"),
-                            this.getX() - Camera.getX(), this.getY() - Camera.getY(), null);
+                    graphics.drawImage(entities.get("weaponFeedbackLeft"), this.getX() - Camera.getX(), this.getY() - Camera.getY() - z, null);
                 }
             }
         }
@@ -290,5 +319,13 @@ public class Player extends Entity {
 
     public void setMouseY(int mouseY) {
         this.mouseY = mouseY;
+    }
+
+    public boolean isJump() {
+        return jump;
+    }
+
+    public void setJump(boolean jump) {
+        this.jump = jump;
     }
 }

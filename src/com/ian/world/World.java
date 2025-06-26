@@ -99,10 +99,23 @@ public class World {
         int x4 = (nextPositionX + TILE_SIZE - 1) / TILE_SIZE;
         int y4 = (nextPositionY + TILE_SIZE - 1) / TILE_SIZE;
 
-        return !((tiles[x1 + (y1 * World.WIDTH)] instanceof TileWall)
+        if (!((tiles[x1 + (y1 * World.WIDTH)] instanceof TileWall)
                 || (tiles[x2 + (y2 * World.WIDTH)] instanceof TileWall)
                 || (tiles[x3 + (y3 * World.WIDTH)] instanceof TileWall)
-                || (tiles[x4 + (y4 * World.WIDTH)] instanceof TileWall));
+                || (tiles[x4 + (y4 * World.WIDTH)] instanceof TileWall))) {
+            return true;
+        }
+        System.out.println(!((tiles[x1 + (y1 * World.WIDTH)] instanceof TileWall)
+                || (tiles[x2 + (y2 * World.WIDTH)] instanceof TileWall)
+                || (tiles[x3 + (y3 * World.WIDTH)] instanceof TileWall)
+                || (tiles[x4 + (y4 * World.WIDTH)] instanceof TileWall)));
+
+        int zPlayer = Game.player.z;
+        if (zPlayer > 0) {
+            return true;
+        }
+
+        return false;
     }
 
     public static int getWIDTH() {
