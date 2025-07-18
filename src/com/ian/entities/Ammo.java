@@ -1,6 +1,6 @@
 package com.ian.entities;
 
-import com.ian.main.Game;
+import com.ian.Game;
 
 import java.awt.image.BufferedImage;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.ian.graphics;
 
 import com.ian.entities.Player;
-import com.ian.main.Game;
+import com.ian.Game;
 
 import java.awt.*;
 

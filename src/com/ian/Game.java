@@ -1,6 +1,5 @@
-package com.ian.main;
+package com.ian;
 
-import com.ian.audio.Audios;
 import com.ian.entities.*;
 import com.ian.graphics.GameMenu;
 import com.ian.graphics.Spritesheet;
@@ -46,6 +45,7 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
     private boolean showMessageGameOver = true;
     private int framesGameOver = 0;
     private boolean restartGame = false;
+    private boolean saveGame = false;
 
     public static Random random;
 
@@ -91,6 +91,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
     public void update() {
         if  (Objects.equals(gameState, "NORMAL")) {
+            if (this.saveGame) {
+                this.saveGame = false;
+                String[] opt1 = {"level"};
+                int[] opt2 = {this.CUR_LEVEL};
+                GameMenu.saveGame(opt1, opt2, 10);
+                System.out.println("Jogo salvo com sucesso!");
+            }
             for (int i = 0; i < entityList.size(); i++) {
                 entityList.get(i).update();
             }
@@ -213,18 +220,6 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         frame.setVisible(true);
     }
 
-    public static String getGameState() {
-        return gameState;
-    }
-
-    public static void setGameState(String gameState) {
-        Game.gameState = gameState;
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_RIGHT || e.getKeyCode() == KeyEvent.VK_D) {
@@ -266,6 +261,10 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         if (e.getKeyCode() == KeyEvent.VK_Z) {
             player.setJump(true);
         }
+
+        if (e.getKeyCode() == KeyEvent.VK_F5){
+            this.saveGame = true;
+        }
     }
 
     @Override
@@ -299,6 +298,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         }
     }
 
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
 
     @Override
     public void mouseClicked(MouseEvent e) {
@@ -325,5 +327,13 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
     @Override
     public void mouseExited(MouseEvent e) {
 
+    }
+
+    public static String getGameState() {
+        return gameState;
+    }
+
+    public static void setGameState(String gameState) {
+        Game.gameState = gameState;
     }
 }

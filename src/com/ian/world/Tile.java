@@ -1,6 +1,6 @@
 package com.ian.world;
 
-import com.ian.main.Game;
+import com.ian.Game;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

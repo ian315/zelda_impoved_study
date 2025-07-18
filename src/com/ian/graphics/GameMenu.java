@@ -1,8 +1,10 @@
 package com.ian.graphics;
 
-import com.ian.main.Game;
+import com.ian.Game;
+import com.ian.world.World;
 
 import java.awt.*;
+import java.io.*;
 import java.util.Objects;
 
 public class GameMenu {
@@ -17,6 +19,9 @@ public class GameMenu {
     private final int HEIGHT = Game.HEIGHT * Game.SCALE;
 
     private static boolean pause = false;
+
+    private static boolean existsSavedGame = false;
+    private static boolean saveGame = false;
 
 
     public void update() {
@@ -75,6 +80,87 @@ public class GameMenu {
         }
         if (Objects.equals(options[currentOption], "exit")) {
             graphics.drawString("> ", WIDTH / 2 - 200, HEIGHT / 2 + 90);
+        }
+    }
+
+    public static void applySave(String string) {
+        String[] split = string.split("/");
+        for (int i = 0; i <= split.length; i++) {
+            String[] split2 = split[1].split(":");
+            switch (split2[0]) {
+                case "level":
+                    World.restartGame("level" + split[2] + ".png");
+                    Game.setGameState("NORMAL");
+                    pause = false;
+                    break;
+
+            }
+        }
+    }
+
+    public static String loadGame(int encode) {
+        StringBuilder line = new StringBuilder();
+        File file = new File("save.txt");
+        if (file.exists()) {
+            try {
+                String singleLine = null;
+                BufferedReader reader = new BufferedReader(new FileReader("save.txt"));
+                try {
+                    while ((singleLine = reader.readLine()) != null) {
+                        String[] transition = singleLine.split(":");
+                        char[] val = transition[1].toCharArray();
+                        transition[1] = "";
+                        for (int i = 0; i < val.length; i++) {
+                            val[i] -= (char) encode;
+                            transition[1] += val[i];
+                        }
+                        line.append(transition[0]);
+                        line.append(":");
+                        line.append(transition[1]);
+                        line.append("/");
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return line.toString();
+    }
+
+    public static void saveGame(String[] val1, int[] val2, int encode) {
+        BufferedWriter bufferedWriter = null;
+        try {
+            bufferedWriter = new BufferedWriter(new FileWriter("save.txt"));
+
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        for (int i = 0; i < val1.length; i++) {
+            StringBuilder current = new StringBuilder(val1[i]);
+            current.append(":");
+            char[] value = Integer.toString(val2[i]).toCharArray();
+            for (int n = 0; n < value.length; n ++) {
+                value[n] += (char) encode;
+                current.append(value[n]);
+            }
+            try {
+                Objects.requireNonNull(bufferedWriter).write(current.toString());
+                if (i < val1.length - 1) {
+                    bufferedWriter.newLine();
+                }
+            }catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            Objects.requireNonNull(bufferedWriter).flush();
+            bufferedWriter.close();
+        } catch (IOException e) {
+
         }
     }
 

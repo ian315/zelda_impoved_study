@@ -1,6 +1,6 @@
 package com.ian.entities;
 
-import com.ian.main.Game;
+import com.ian.Game;
 import com.ian.world.Camera;
 import com.ian.world.World;
 

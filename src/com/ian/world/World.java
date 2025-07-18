@@ -2,7 +2,7 @@ package com.ian.world;
 
 import com.ian.entities.*;
 import com.ian.graphics.Spritesheet;
-import com.ian.main.Game;
+import com.ian.Game;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
