@@ -93,8 +93,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         if  (Objects.equals(gameState, "NORMAL")) {
             if (this.saveGame) {
                 this.saveGame = false;
-                String[] opt1 = {"level", "vida"    };
-                int[] opt2 = {this.CUR_LEVEL, (int) player.getLife()};
+                String[] opt1 = {"level", "vida", "x", "y"};
+                double[] opt2 = {this.CUR_LEVEL, player.getLife(), player.getX(), player.getY()};
                 GameMenu.saveGame(opt1, opt2, 10);
                 System.out.println("Jogo salvo com sucesso!");
             }
