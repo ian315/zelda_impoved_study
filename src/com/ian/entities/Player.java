@@ -257,6 +257,10 @@ public class Player extends Entity {
         return life;
     }
 
+    public void setLife(double life) {
+        this.life = life;
+    }
+
     public static double getMaxLife() {
         return maxLife;
     }

@@ -25,6 +25,12 @@ public class GameMenu {
 
 
     public void update() {
+        File file = new File("sava.txt");
+
+        if (file.exists()) {
+            existsSavedGame = true;
+        }
+
         if (up) {
             up = false;
             currentOption--;
@@ -45,6 +51,16 @@ public class GameMenu {
             if (Objects.equals(options[currentOption], "novoJogo") || (Objects.equals(options[currentOption], "continuar"))){
                 Game.setGameState("NORMAL");
                 pause = false;
+                //Caso queira toda a vez que iniciar um novo jogo apaga o último save
+                //file = new File("save.txt");
+                //file.delete();
+            }
+        }
+
+        if (enter) {
+            if (Objects.equals(options[currentOption], "load")) {
+                String saver = loadGame(10);
+                applySave(saver);
             }
         }
 
@@ -85,15 +101,17 @@ public class GameMenu {
 
     public static void applySave(String string) {
         String[] split = string.split("/");
-        for (int i = 0; i <= split.length; i++) {
-            String[] split2 = split[1].split(":");
+        for (int i = 0; i < split.length; i++) {
+            String[] split2 = split[i].split(":");
             switch (split2[0]) {
                 case "level":
-                    World.restartGame("level" + split[2] + ".png");
+                    World.restartGame("level" + split2[1] + ".png");
                     Game.setGameState("NORMAL");
                     pause = false;
                     break;
-
+                case  "vida":
+                    Game.player.setLife(Integer.parseInt(split2[1]));
+                    break;
             }
         }
     }
