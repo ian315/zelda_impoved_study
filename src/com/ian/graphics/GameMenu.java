@@ -105,13 +105,13 @@ public class GameMenu {
             String[] split2 = split[i].split(":");
             switch (split2[0]) {
                 case "level":
-                    World.restartGame("level" + split2[1].replace(".0", "") + ".png");
+                    World.restartGame("level" + split2[1] + ".png");
                     Game.setGameState("NORMAL");
                     pause = false;
                     break;
 
                 case  "vida":
-                    Game.player.setLife(Integer.parseInt(split2[1].replace(".0", "")));
+                    Game.player.setLife(Integer.parseInt(split2[1]));
                     break;
 
                 case  "x":
@@ -159,7 +159,7 @@ public class GameMenu {
         return line.toString();
     }
 
-    public static void saveGame(String[] val1, double[] val2, int encode) {
+    public static void saveGame(String[] val1, int[] val2, int encode) {
         BufferedWriter bufferedWriter = null;
         try {
             bufferedWriter = new BufferedWriter(new FileWriter("save.txt"));
@@ -171,7 +171,7 @@ public class GameMenu {
         for (int i = 0; i < val1.length; i++) {
             StringBuilder current = new StringBuilder(val1[i]);
             current.append(":");
-            char[] value = Double.toString(val2[i]).toCharArray();
+            char[] value = Integer.toString(val2[i]).toCharArray();
             for (int n = 0; n < value.length; n ++) {
                 value[n] += (char) encode;
                 current.append(value[n]);
