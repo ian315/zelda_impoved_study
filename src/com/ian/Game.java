@@ -8,10 +8,7 @@ import com.ian.world.World;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -20,7 +17,7 @@ import java.util.Objects;
 import java.util.Random;
 
 
-public class Game extends Canvas implements Runnable, KeyListener, MouseListener {
+public class Game extends Canvas implements Runnable, KeyListener, MouseListener, MouseMotionListener {
     private boolean isRunning;
     private Thread thread;
 
@@ -41,6 +38,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
     public Ui ui;
     public GameMenu menu;
 
+//    public InputStream inputFont = ClassLoader.getSystemClassLoader().getResourceAsStream("pixelart.ttf");
+//    public static Font pixelArtFont;
+
     private static String gameState = "MENU";
     private boolean showMessageGameOver = true;
     private int framesGameOver = 0;
@@ -49,24 +49,36 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
     public static Random random;
 
+    private int mousePositionX, mousePositionY;
+
     public Game() {
 //      para adicionar uma musica de background basta iniciar aqui
 //        Audios.backgroundMusic.loop();
         addKeyListener(this);
         addMouseListener(this);
+        addMouseMotionListener(this);
         this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
         initializeFrame();
-        random = new Random();
+
         //Aqui inicializa os objetos
         bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
         ui = new Ui();
         menu = new GameMenu();
+
+        random = new Random();
         entityList = new ArrayList<>();
         enemyList = new ArrayList<>();
         player = new Player(0, 0, 16, 16, Game.spritesheet.getSprite(32, 0, 16, 16));
         entityList.add(player);
         bullets = new ArrayList<>();
-        world = new World("/level1.png"); // World precisa ser depois do spritesheet, pois precisamos inicializar antes, se nao vai dar nullpointer
+        world = new World("/level1.png"); // World precisa ser depois do spritesheet, pois precisamos inicializar antes, se nao vai dar null pointer
+
+//      Adicionando uma nova fonte
+//        try {
+//            pixelArtFont = Font.createFont(Font.TRUETYPE_FONT, inputFont).deriveFont(16f);
+//        } catch (FontFormatException | IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
 
     public static void main(String[] args) {
@@ -175,7 +187,12 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         else if (Objects.equals(gameState, "MENU")) {
             menu.render(graphics);
         }
-
+        /* Exemplo de rotacao de um retangulo
+        Graphics2D graphics2D = (Graphics2D) graphics;
+        double angleMouse = Math.atan2(200 + 10 - mousePositionY, 200 + 10 - mousePositionX);
+        graphics2D.rotate(angleMouse, 200 + 10, 200 + 10);
+        graphics.setColor(Color.red);
+        graphics.fillRect(200, 200, 20, 20); */
         bufferStrategy.show();
     }
 
@@ -336,5 +353,16 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
     public static void setGameState(String gameState) {
         Game.gameState = gameState;
+    }
+
+    @Override
+    public void mouseDragged(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent e) {
+        this.mousePositionX = e.getX();
+        this.mousePositionY = e.getY();
     }
 }

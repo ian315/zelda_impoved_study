@@ -9,6 +9,7 @@ public class Ui {
 
     public void render(Graphics graphics) {
         //HEALTH BAR
+//        graphics.setFont(Game.pixelArtFont);
         graphics.setColor(Color.RED);
         graphics.fillRect(5, 5, (int) ((Game.player.getLife() / Player.getMaxLife()) * 100), 8);
         graphics.setColor(Color.WHITE);
@@ -17,5 +18,6 @@ public class Ui {
         //AMMO
         graphics.setColor(Color.YELLOW);
         graphics.drawString("Ammo: " + Player.getAmmo(), 5, 22);
+
     }
 }
