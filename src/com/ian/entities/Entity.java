@@ -70,6 +70,11 @@ public class Entity {
 
     }
 
+    public double calculateDistance(int positionX, int positionY, int positionX2, int positionY2) {
+
+        return Math.sqrt((positionX - positionX2) * (positionX - positionX2) + (positionY - positionY2) * (positionY - positionY2));
+    }
+
     public boolean rightTileIsFree(double SPEED) {
         return World.isTileFree((int) (this.getX() + SPEED), this.getY());
     }

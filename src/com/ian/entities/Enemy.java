@@ -78,28 +78,27 @@ public class Enemy extends Entity {
         // caso eu nao use um cast no na direcao, se eu nao usar else if ele quebra, no entanto se usa apenas IF ele funciona normal
         // como quero q o mob se movimente na diagonal tambem, nao irei usar else if
 
-        if (!hasPlayerCollided()) {
-            if (Game.random.nextInt(100) < 45) {
-                if (x < Game.player.getX() && rightTileIsFree(SPEED) && isNotColliding((int) (this.getX() + SPEED), this.getY())) {
-                    x += SPEED;
-                } else if (x > Game.player.getX() && leftTileIsFree(SPEED) && isNotColliding((int) (this.getX() - SPEED), this.getY())) {
-                    x -= SPEED;
+        if (this.calculateDistance(this.getX(), this.getY(), Game.player.getX(), Game.player.getY()) < 115) {
+            if (!hasPlayerCollided()) {
+                if (Game.random.nextInt(100) < 45) {
+                    if (x < Game.player.getX() && rightTileIsFree(SPEED) && isNotColliding((int) (this.getX() + SPEED), this.getY())) {
+                        x += SPEED;
+                    } else if (x > Game.player.getX() && leftTileIsFree(SPEED) && isNotColliding((int) (this.getX() - SPEED), this.getY())) {
+                        x -= SPEED;
+                    } else if (y < Game.player.getY() && downTileIsFree(SPEED) && isNotColliding(this.getX(), (int) (this.getY() + SPEED))) {
+                        y += SPEED;
+                    } else if (y > Game.player.getY() && upTileIsFree(SPEED) && isNotColliding(this.getX(), (int) (this.getY() - SPEED))) {
+                        y -= SPEED;
+                    }
                 }
-
-                else if (y < Game.player.getY() && downTileIsFree(SPEED) && isNotColliding(this.getX(), (int) (this.getY() + SPEED))) {
-                    y += SPEED;
-                } else if (y > Game.player.getY() && upTileIsFree(SPEED) && isNotColliding(this.getX(), (int) (this.getY() - SPEED))) {
-                    y -= SPEED;
+            } else {
+                if (Game.random.nextInt(100) < 10) {
+                    Audios.hit.play();
+                    Game.player.life -= Game.random.nextInt(3);
+                    Player.setDamaged(true);
                 }
-            }
-        } else {
-            if (Game.random.nextInt(100) < 10) {
-                Audios.hit.play();
-                Game.player.life -= Game.random.nextInt(3);
-                Player.setDamaged(true);
             }
         }
-
         enemyCollisionWithBullet();
 
         if (isDamaged) {

@@ -6,11 +6,14 @@ import com.ian.graphics.Spritesheet;
 import com.ian.graphics.Ui;
 import com.ian.world.World;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -37,6 +40,9 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
     public static List<AmmoShoot> bullets;
     public Ui ui;
     public GameMenu menu;
+    private int[] pixels;
+    private int[] lightmapPixels;
+    private BufferedImage lightmap;
 
 //    public InputStream inputFont = ClassLoader.getSystemClassLoader().getResourceAsStream("pixelart.ttf");
 //    public static Font pixelArtFont;
@@ -62,6 +68,16 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
 
         //Aqui inicializa os objetos
         bufferedImage = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
+
+        try {
+            lightmap = ImageIO.read(getClass().getResource("/lightmap.png"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        lightmapPixels = new int[lightmap.getWidth() * lightmap.getHeight()];
+        lightmap.getRGB(0, 0, lightmap.getWidth(), lightmap.getHeight(), lightmapPixels, 0, lightmap.getWidth());
+        pixels = ((DataBufferInt)bufferedImage.getRaster().getDataBuffer()).getData();
         ui = new Ui();
         menu = new GameMenu();
 
@@ -165,7 +181,8 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         for (int i = 0; i < bullets.size(); i++) {
             bullets.get(i).render(graphics);
         }
-
+        // vou inicializar aqui o lightmap para que nao inclua a UI
+        applyLight();
         ui.render(graphics);
 
         graphics.dispose();
@@ -194,6 +211,15 @@ public class Game extends Canvas implements Runnable, KeyListener, MouseListener
         graphics.setColor(Color.red);
         graphics.fillRect(200, 200, 20, 20); */
         bufferStrategy.show();
+    }
+
+    private void applyLight() {
+        for (int xx = 0; xx < WIDTH; xx++) {
+            for (int yy = 0; yy < HEIGHT; yy++) {
+                if (lightmapPixels[xx + (yy * WIDTH)] == 0xffffffff)
+                    pixels[xx + (yy * WIDTH)] = 0;
+            }
+        }
     }
 
     @Override
